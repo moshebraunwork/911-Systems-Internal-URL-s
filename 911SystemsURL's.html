@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>911 Systems – Account Directory</title>
+  <link rel="icon" href="https://911systems.com/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #a9ee8a;
+      --green-dim: #7dce5e;
+      --green-light: #d4f7bf;
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --gray-50: #f8faf6;
+      --gray-100: #eef2eb;
+      --gray-200: #d8e0d4;
+      --gray-400: #9aaa93;
+      --gray-600: #5c6b57;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-50);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--black);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      border-bottom: 3px solid var(--green);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-wrap img {
+      height: 36px;
+      display: block;
+      filter: brightness(0) invert(1);
+    }
+    .header-title {
+      font-family: 'Space Mono', monospace;
+      color: var(--green);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+    .page-subtitle {
+      color: var(--gray-600);
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+
+    /* ── ENV TABS ── */
+    .env-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0;
+    }
+    .env-tab {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border-radius: 6px 6px 0 0;
+      border: none;
+      background: transparent;
+      color: var(--gray-400);
+      cursor: pointer;
+      margin-bottom: -2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .env-tab:hover { color: var(--black); }
+    .env-tab.active {
+      color: var(--black);
+      border-bottom: 2px solid var(--green);
+      background: var(--white);
+    }
+    .env-tab .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+    .env-tab.dev .dot  { background: #60a5fa; }
+    .env-tab.stg .dot  { background: #f59e0b; }
+    .env-tab.prod .dot { background: var(--green); }
+
+    /* ── ENV PANEL ── */
+    .env-panel { display: none; }
+    .env-panel.active { display: block; }
+
+    /* ── SECTION ── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 12px;
+      margin-top: 28px;
+    }
+
+    /* ── LINK GRID ── */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .link-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      position: relative;
+    }
+    .link-card:hover {
+      border-color: var(--green);
+      box-shadow: 0 4px 16px rgba(169,238,138,0.18);
+      transform: translateY(-2px);
+    }
+    .link-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .link-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .link-icon svg { width: 18px; height: 18px; }
+    .link-name {
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .link-url {
+      font-size: 11px;
+      color: var(--gray-400);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    .link-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .btn-open {
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      background: var(--black);
+      color: var(--green);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .btn-open:hover { background: #222; }
+    .btn-remove {
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .btn-remove:hover { background: #fca5a5; }
+
+    /* admin card accent */
+    .link-card.admin-card {
+      border-color: var(--gray-200);
+    }
+    .link-card.admin-card .link-icon {
+      background: var(--black);
+    }
+    .link-card.admin-card .link-icon svg { color: var(--green); }
+
+    /* ── ADD LINK FORM ── */
+    .add-link-row {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #add-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      background: var(--green);
+      color: var(--black);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    #add-btn:hover { background: var(--green-dim); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      border-top: 4px solid var(--green);
+    }
+    .modal h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .form-row { margin-bottom: 16px; }
+    .form-row label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .form-row input, .form-row select {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-row input:focus, .form-row select:focus {
+      border-color: var(--green);
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .btn-cancel {
+      flex: 1;
+      padding: 10px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      background: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-cancel:hover { background: var(--gray-100); }
+    .btn-save {
+      flex: 2;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: var(--green);
+      color: var(--black);
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: var(--green-dim); }
+
+    /* empty state */
+    .empty-state {
+      padding: 32px;
+      text-align: center;
+      border: 2px dashed var(--gray-200);
+      border-radius: 10px;
+      color: var(--gray-400);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--gray-400);
+      font-size: 12px;
+      font-family: 'Space Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="https://911systems.com/logo.svg" alt="911 Systems" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block'">
+    <span class="logo-text header-title" style="display:none">911 Systems</span>
+  </div>
+  <span class="header-title">Account Directory</span>
+</header>
+
+<main>
+  <h1 class="page-title">Account Directory</h1>
+  <p class="page-subtitle">All environment accounts and admin portals — internal use only.</p>
+
+  <div class="env-tabs">
+    <button class="env-tab dev active" onclick="switchTab('dev')">
+      <span class="dot"></span>Development
+    </button>
+    <button class="env-tab stg" onclick="switchTab('stg')">
+      <span class="dot"></span>Staging
+    </button>
+    <button class="env-tab prod" onclick="switchTab('prod')">
+      <span class="dot"></span>Production
+    </button>
+  </div>
+
+  <!-- DEV -->
+  <div class="env-panel active" id="panel-dev">
+    <div class="section-label">Admin Portal</div>
+    <div class="link-grid" id="grid-dev-admin"></div>
+
+    <div class="section-label">Accounts</div>
+    <div class="link-grid" id="grid-dev-accounts"></div>
+
+    <div class="add-link-row">
+      <button id="add-btn" onclick="openModal('dev')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Link
+      </button>
+    </div>
+  </div>
+
+  <!-- STAGING -->
+  <div class="env-panel" id="panel-stg">
+    <div class="section-label">Admin Portal</div>
+    <div class="link-grid" id="grid-stg-admin"></div>
+
+    <div class="section-label">Accounts</div>
+    <div class="link-grid" id="grid-stg-accounts"></div>
+
+    <div class="add-link-row">
+      <button id="add-btn" onclick="openModal('stg')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Link
+      </button>
+    </div>
+  </div>
+
+  <!-- PROD -->
+  <div class="env-panel" id="panel-prod">
+    <div class="section-label">Admin Portal</div>
+    <div class="link-grid" id="grid-prod-admin"></div>
+
+    <div class="section-label">Accounts</div>
+    <div class="link-grid" id="grid-prod-accounts"></div>
+
+    <div class="add-link-row">
+      <button id="add-btn" onclick="openModal('prod')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Link
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ADD LINK MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3>Add Link</h3>
+    <div class="form-row">
+      <label>Name</label>
+      <input type="text" id="input-name" placeholder="e.g. TOT Account – Agency X">
+    </div>
+    <div class="form-row">
+      <label>URL</label>
+      <input type="text" id="input-url" placeholder="https://...">
+    </div>
+    <div class="form-row">
+      <label>Type</label>
+      <select id="input-type">
+        <option value="accounts">Account</option>
+        <option value="admin">Admin Portal</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveLink()">Save Link</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 911 Systems · Internal Use Only</footer>
+
+<script>
+  // ── DATA ──
+  // Built-in links are always hardcoded — never stored in localStorage
+  const BUILTIN = {
+    dev: {
+      admin:    [ { id: 'd-admin-1', name: 'Admin Portal', url: 'https://admin.dev-helptapp.com/login', builtin: true } ],
+      accounts: [ { id: 'd-acc-1',   name: 'TOT Account',  url: 'https://tot.account.dev-helptapp.com/', builtin: true } ]
+    },
+    stg:  { admin: [], accounts: [] },
+    prod: { admin: [], accounts: [] }
+  };
+
+  function loadData() {
+    let userAdded = { dev: { admin: [], accounts: [] }, stg: { admin: [], accounts: [] }, prod: { admin: [], accounts: [] } };
+    try {
+      const saved = localStorage.getItem('911-dir-useradded');
+      if (saved) userAdded = JSON.parse(saved);
+    } catch {}
+    // Merge builtins + user-added
+    const merged = {};
+    ['dev','stg','prod'].forEach(env => {
+      merged[env] = {};
+      ['admin','accounts'].forEach(type => {
+        merged[env][type] = [
+          ...(BUILTIN[env][type] || []),
+          ...(userAdded[env]?.[type] || [])
+        ];
+      });
+    });
+    return merged;
+  }
+
+  function saveData() {
+    // Only persist user-added links
+    const userAdded = { dev: { admin: [], accounts: [] }, stg: { admin: [], accounts: [] }, prod: { admin: [], accounts: [] } };
+    ['dev','stg','prod'].forEach(env => {
+      ['admin','accounts'].forEach(type => {
+        userAdded[env][type] = data[env][type].filter(i => !i.builtin);
+      });
+    });
+    try { localStorage.setItem('911-dir-useradded', JSON.stringify(userAdded)); } catch {}
+  }
+
+  let data = loadData();
+  let currentEnv = 'dev';
+
+  // ── ICONS ──
+  const ICON_ACCOUNT = `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
+  const ICON_ADMIN = `<svg fill="none" stroke="var(--green)" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+  const ICON_OPEN = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+  // ── RENDER ──
+  function renderAll() {
+    ['dev','stg','prod'].forEach(env => {
+      ['admin','accounts'].forEach(type => {
+        const grid = document.getElementById(`grid-${env}-${type}`);
+        const items = data[env][type];
+        if (!items.length) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">No links yet. Click <strong>Add Link</strong> to get started.</div>`;
+          return;
+        }
+        grid.innerHTML = items.map(item => cardHTML(item, env, type)).join('');
+      });
+    });
+  }
+
+  function cardHTML(item, env, type) {
+    const isAdmin = type === 'admin';
+    const icon = isAdmin ? ICON_ADMIN : ICON_ACCOUNT;
+    const displayUrl = item.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    return `
+      <div class="link-card ${isAdmin ? 'admin-card' : ''}">
+        <div class="link-card-left">
+          <div class="link-icon">${icon}</div>
+          <div>
+            <div class="link-name" title="${escHtml(item.name)}">${escHtml(item.name)}</div>
+            <div class="link-url" title="${escHtml(item.url)}">${escHtml(displayUrl)}</div>
+          </div>
+        </div>
+        <div class="link-actions">
+          <a class="btn-open" href="${escHtml(item.url)}" target="_blank" title="Open">${ICON_OPEN}</a>
+          ${item.builtin ? '' : `<button class="btn-remove" onclick="removeLink('${env}','${type}','${item.id}')" title="Remove">×</button>`}
+        </div>
+      </div>`;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── TABS ──
+  function switchTab(env) {
+    currentEnv = env;
+    document.querySelectorAll('.env-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.env-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`.env-tab.${env}`).classList.add('active');
+    document.getElementById(`panel-${env}`).classList.add('active');
+  }
+
+  // ── MODAL ──
+  function openModal(env) {
+    currentEnv = env;
+    document.getElementById('input-name').value = '';
+    document.getElementById('input-url').value = '';
+    document.getElementById('input-type').value = 'accounts';
+    document.getElementById('modal').classList.add('open');
+    setTimeout(() => document.getElementById('input-name').focus(), 50);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  function saveLink() {
+    const name = document.getElementById('input-name').value.trim();
+    let url = document.getElementById('input-url').value.trim();
+    const type = document.getElementById('input-type').value;
+
+    if (!name || !url) { alert('Please fill in both Name and URL.'); return; }
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+    const id = `${currentEnv}-${type}-${Date.now()}`;
+    data[currentEnv][type].push({ id, name, url });
+    saveData();
+    renderAll();
+    closeModal();
+  }
+
+  // ── REMOVE ──
+  function removeLink(env, type, id) {
+    if (!confirm('Remove this link?')) return;
+    data[env][type] = data[env][type].filter(i => i.id !== id);
+    saveData();
+    renderAll();
+  }
+
+  // close modal on overlay click
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // enter to save
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ── INIT ──
+  renderAll();
+</script>
+</body>
+</html>
