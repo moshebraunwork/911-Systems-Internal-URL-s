@@ -461,8 +461,14 @@
       admin:    [ { id: 'd-admin-1', name: 'Admin Portal', url: 'https://admin.dev-helptapp.com/login', builtin: true } ],
       accounts: [ { id: 'd-acc-1',   name: 'TOT Account',  url: 'https://tot.account.dev-helptapp.com/', builtin: true } ]
     },
-    stg:  { admin: [], accounts: [] },
-    prod: { admin: [], accounts: [] }
+    stg:  { admin: [], accounts: [
+      { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.staging-helptapp.com/', builtin: true }
+    ] },
+    prod: { admin: [], accounts: [
+      { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.911systems.com', builtin: true }
+      { id: 'd-acc-1',   name: 'MPD Account',  url: 'https://mpd.account.911systems.com/', builtin: true },
+      { id: 'd-acc-1',   name: 'MFD Account',  url: 'https://mfd.account.911systems.com/', builtin: true }
+    ] }
   };
 
   function loadData() {
