@@ -20,342 +20,423 @@
       --gray-400: #9aaa93;
       --gray-600: #5c6b57;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--gray-50); color: var(--black); min-height: 100vh; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--gray-50);
-      color: var(--black);
-      min-height: 100vh;
-    }
-
-    /* ── HEADER ── */
+    /* HEADER */
     header {
-      background: var(--black);
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 68px;
-      border-bottom: 3px solid var(--green);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: var(--black); padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px; border-bottom: 3px solid var(--green);
+      position: sticky; top: 0; z-index: 100;
     }
-    .logo-wrap img {
-      height: 36px;
-      display: block;
-      filter: brightness(0) invert(1);
-    }
-    .header-title {
-      font-family: 'Space Mono', monospace;
-      color: var(--green);
-      font-size: 13px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
+    .logo-wrap img { height: 36px; display: block; filter: brightness(0) invert(1); }
+    .logo-text { display: none; }
+    .header-title { font-family: 'Space Mono', monospace; color: var(--green); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
 
-    /* ── MAIN ── */
-    main {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
+    /* MAIN */
+    main { max-width: 1080px; margin: 0 auto; padding: 48px 24px 80px; }
+    .page-title { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+    .page-subtitle { color: var(--gray-600); font-size: 15px; margin-bottom: 40px; }
 
-    .page-title {
-      font-family: 'Space Mono', monospace;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--black);
-      margin-bottom: 4px;
-    }
-    .page-subtitle {
-      color: var(--gray-600);
-      font-size: 15px;
-      margin-bottom: 40px;
-    }
-
-    /* ── ENV TABS ── */
-    .env-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 32px;
-      border-bottom: 2px solid var(--gray-200);
-      padding-bottom: 0;
-    }
+    /* TABS */
+    .env-tabs { display: flex; gap: 6px; margin-bottom: 32px; border-bottom: 2px solid var(--gray-200); }
     .env-tab {
-      font-family: 'Space Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 10px 22px;
-      border-radius: 6px 6px 0 0;
-      border: none;
-      background: transparent;
-      color: var(--gray-400);
-      cursor: pointer;
-      margin-bottom: -2px;
-      border-bottom: 2px solid transparent;
+      font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 10px 22px; border-radius: 6px 6px 0 0;
+      border: none; background: transparent; color: var(--gray-400);
+      cursor: pointer; margin-bottom: -2px; border-bottom: 2px solid transparent;
       transition: color 0.15s, border-color 0.15s;
     }
     .env-tab:hover { color: var(--black); }
-    .env-tab.active {
-      color: var(--black);
-      border-bottom: 2px solid var(--green);
-      background: var(--white);
-    }
-    .env-tab .dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      margin-right: 7px;
-      vertical-align: middle;
-    }
-    .env-tab.dev .dot  { background: #60a5fa; }
-    .env-tab.stg .dot  { background: #f59e0b; }
-    .env-tab.prod .dot { background: var(--green); }
+    .env-tab.active { color: var(--black); border-bottom: 2px solid var(--green); background: var(--white); }
+    .env-tab .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
+    .tab-dev .dot  { background: #60a5fa; }
+    .tab-stg .dot  { background: #f59e0b; }
+    .tab-prod .dot { background: var(--green); }
 
-    /* ── ENV PANEL ── */
     .env-panel { display: none; }
     .env-panel.active { display: block; }
 
-    /* ── SECTION ── */
     .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gray-400);
-      margin-bottom: 12px;
-      margin-top: 28px;
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray-400); margin-bottom: 12px; margin-top: 28px;
     }
 
-    /* ── LINK GRID ── */
-    .link-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-    }
-
+    /* CARDS */
+    .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
     .link-card {
-      background: var(--white);
-      border: 1.5px solid var(--gray-200);
-      border-radius: 10px;
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      background: var(--white); border: 1.5px solid var(--gray-200);
+      border-radius: 10px; padding: 16px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
       transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-      position: relative;
     }
-    .link-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 4px 16px rgba(169,238,138,0.18);
-      transform: translateY(-2px);
-    }
-    .link-card-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      min-width: 0;
-    }
-    .link-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      background: var(--green-light);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    .link-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(169,238,138,0.18); transform: translateY(-2px); }
+    .link-card-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+    .link-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .link-icon svg { width: 18px; height: 18px; }
-    .link-name {
-      font-weight: 600;
-      font-size: 14px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .link-url {
-      font-size: 11px;
-      color: var(--gray-400);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 2px;
-    }
-    .link-actions {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .admin-card .link-icon { background: var(--black); }
+    .link-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-url { font-size: 11px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .link-actions { display: flex; gap: 5px; flex-shrink: 0; align-items: center; }
+
+    /* ACTION BUTTONS */
     .btn-open {
-      width: 32px; height: 32px;
-      border-radius: 7px;
-      background: var(--black);
-      color: var(--green);
-      border: none;
-      cursor: pointer;
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--black); color: var(--green);
+      border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s;
-      text-decoration: none;
+      transition: background 0.15s; text-decoration: none;
     }
-    .btn-open:hover { background: #222; }
+    .btn-open:hover { background: #333; }
     .btn-remove {
-      width: 32px; height: 32px;
-      border-radius: 7px;
-      background: #fee2e2;
-      color: #dc2626;
-      border: none;
-      cursor: pointer;
+      width: 30px; height: 30px; border-radius: 7px;
+      background: #fee2e2; color: #dc2626;
+      border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1;
+      font-size: 17px; font-weight: 700; line-height: 1;
     }
     .btn-remove:hover { background: #fca5a5; }
 
-    /* admin card accent */
-    .link-card.admin-card {
-      border-color: var(--gray-200);
+    /* edit toggle button on cards */
+    .btn-card-edit {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--gray-100); color: var(--gray-600);
+      border: 1.5px solid var(--gray-200);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
-    .link-card.admin-card .link-icon {
-      background: var(--black);
-    }
-    .link-card.admin-card .link-icon svg { color: var(--green); }
+    .btn-card-edit:hover { background: var(--green-light); border-color: var(--green); color: var(--black); }
+    .btn-card-edit.active { background: var(--green); border-color: var(--green-dim); color: var(--black); }
+    .btn-card-edit .icon-save-mode { display: none; }
+    .btn-card-edit .icon-edit-mode { display: flex; }
+    .link-card.editing .btn-card-edit .icon-save-mode { display: flex; }
+    .link-card.editing .btn-card-edit .icon-edit-mode { display: none; }
+    .link-card.editing .btn-card-edit { background: var(--green); border-color: var(--green-dim); color: var(--black); }
 
-    /* ── ADD LINK FORM ── */
-    .add-link-row {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* card edit mode */
+    .link-card.editing {
+      border-color: var(--green);
+      box-shadow: 0 4px 16px rgba(169,238,138,0.2);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
     }
-    #add-btn {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 10px 20px;
-      background: var(--green);
-      color: var(--black);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    .link-card.editing .card-view { display: none; }
+    .card-edit-form { display: none; flex-direction: column; gap: 8px; }
+    .link-card.editing .card-edit-form { display: flex; }
+    .card-edit-input {
+      width: 100%; border: 1.5px solid var(--gray-200); border-radius: 7px;
+      padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+      background: var(--white); transition: border-color 0.15s;
+    }
+    .card-edit-input:focus { border-color: var(--green); }
+    .card-edit-actions { display: flex; gap: 6px; margin-top: 2px; }
+    .btn-card-save {
+      flex: 1; padding: 7px 10px; border: none; border-radius: 7px;
+      background: var(--green); color: var(--black);
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-card-save:hover { background: var(--green-dim); }
+    .btn-card-cancel {
+      padding: 7px 12px; border: 1.5px solid var(--gray-200); border-radius: 7px;
+      background: var(--white); font-size: 12px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+    }
+    .btn-card-cancel:hover { background: var(--gray-100); }
+    .btn-card-delete {
+      padding: 7px 10px; border: none; border-radius: 7px;
+      background: #fee2e2; color: #dc2626;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
       transition: background 0.15s;
-      display: flex; align-items: center; gap: 8px;
-      white-space: nowrap;
     }
-    #add-btn:hover { background: var(--green-dim); }
+    .btn-card-delete:hover { background: #fca5a5; }
 
-    /* ── MODAL ── */
+    /* KEY BUTTON — login manager trigger */
+    .btn-logins {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--gray-100); color: var(--gray-600);
+      border: 1.5px solid var(--gray-200);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      position: relative;
+    }
+    .btn-logins:hover { background: var(--green-light); border-color: var(--green); color: var(--black); }
+    .btn-logins.has-logins { background: var(--green-light); border-color: var(--green-dim); color: var(--black); }
+    .login-count-badge {
+      position: absolute; top: -5px; right: -5px;
+      background: var(--black); color: var(--green);
+      font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+
+    /* ADD LINK */
+    .add-link-row { margin-top: 24px; }
+    .add-btn {
+      font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 10px 20px; background: var(--green); color: var(--black);
+      border: none; border-radius: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .add-btn:hover { background: var(--green-dim); }
+
+    /* EMPTY STATE */
+    .empty-state {
+      grid-column: 1 / -1; padding: 32px; text-align: center;
+      border: 2px dashed var(--gray-200); border-radius: 10px;
+      color: var(--gray-400); font-size: 14px;
+    }
+
+    /* ═══════════════════════════════════════════
+       MODAL — shared base
+    ═══════════════════════════════════════════ */
     .modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.45); z-index: 999;
       align-items: center; justify-content: center;
+      padding: 20px;
     }
     .modal-overlay.open { display: flex; }
     .modal {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 32px 28px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      background: var(--white); border-radius: 14px; padding: 28px 28px 24px;
+      width: 100%; max-width: 440px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.18);
       border-top: 4px solid var(--green);
     }
-    .modal h3 {
-      font-family: 'Space Mono', monospace;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-    .form-row { margin-bottom: 16px; }
-    .form-row label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--gray-600);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
-    }
+    .modal h3 { font-family: 'Space Mono', monospace; font-size: 15px; margin-bottom: 20px; }
+    .form-row { margin-bottom: 14px; }
+    .form-row label { display: block; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
     .form-row input, .form-row select {
-      width: 100%;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      outline: none;
+      width: 100%; border: 1.5px solid var(--gray-200); border-radius: 8px;
+      padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
       transition: border-color 0.15s;
     }
-    .form-row input:focus, .form-row select:focus {
-      border-color: var(--green);
-    }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 22px;
-    }
+    .form-row input:focus, .form-row select:focus { border-color: var(--green); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
     .btn-cancel {
-      flex: 1;
-      padding: 10px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 8px;
-      background: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.15s;
+      flex: 1; padding: 10px; border: 1.5px solid var(--gray-200); border-radius: 8px;
+      background: var(--white); font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif;
     }
     .btn-cancel:hover { background: var(--gray-100); }
     .btn-save {
-      flex: 2;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: var(--green);
-      color: var(--black);
-      font-family: 'Space Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s;
+      flex: 2; padding: 10px; border: none; border-radius: 8px;
+      background: var(--green); color: var(--black);
+      font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; cursor: pointer;
     }
     .btn-save:hover { background: var(--green-dim); }
 
-    /* empty state */
-    .empty-state {
-      padding: 32px;
-      text-align: center;
-      border: 2px dashed var(--gray-200);
-      border-radius: 10px;
-      color: var(--gray-400);
-      font-size: 14px;
-      margin-top: 4px;
+    /* ═══════════════════════════════════════════
+       LOGIN MANAGER MODAL
+    ═══════════════════════════════════════════ */
+    #login-modal .modal {
+      max-width: 500px;
+      padding: 0;
+      overflow: hidden;
+      border-top: none;
     }
 
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: var(--gray-400);
-      font-size: 12px;
-      font-family: 'Space Mono', monospace;
+    .lm-header {
+      background: var(--black);
+      padding: 20px 24px 18px;
+      border-bottom: 3px solid var(--green);
+      display: flex; align-items: center; justify-content: space-between;
     }
+    .lm-header-left { display: flex; align-items: center; gap: 12px; }
+    .lm-header-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(169,238,138,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .lm-title { font-family: 'Space Mono', monospace; color: var(--white); font-size: 14px; font-weight: 700; }
+    .lm-subtitle { color: var(--gray-400); font-size: 11px; margin-top: 2px; }
+    .lm-close {
+      width: 30px; height: 30px; border-radius: 6px;
+      background: rgba(255,255,255,0.08); color: var(--gray-400);
+      border: none; cursor: pointer; font-size: 18px; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lm-close:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+
+    .lm-body { padding: 20px 24px; max-height: 60vh; overflow-y: auto; }
+
+    /* login entry rows */
+    .login-entry {
+      background: var(--gray-50); border: 1.5px solid var(--gray-200);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    .login-entry:hover { border-color: var(--gray-400); }
+    .login-entry-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--black); color: var(--green);
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .login-field-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+    }
+    .login-field-row:last-child { margin-bottom: 0; }
+    .login-field-icon {
+      width: 28px; height: 28px; border-radius: 6px; background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .login-field-icon svg { width: 14px; height: 14px; color: var(--gray-600); }
+    .login-field-value {
+      flex: 1; font-size: 13px; color: var(--black);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .login-field-value.password { letter-spacing: 0.15em; font-size: 14px; color: var(--gray-600); }
+    .login-field-value.password.revealed { letter-spacing: normal; font-size: 13px; color: var(--black); font-family: 'Space Mono', monospace; }
+    .btn-copy {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--black); color: var(--green);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .btn-copy:hover { background: #333; }
+    .btn-copy.copied { background: var(--green); color: var(--black); }
+    .btn-eye {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--gray-100); color: var(--gray-600);
+      border: 1.5px solid var(--gray-200); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .btn-eye:hover { background: var(--gray-200); }
+    .btn-delete-login {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: #fee2e2; color: #dc2626;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .btn-delete-login:hover { background: #fca5a5; }
+    .btn-edit-login {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--gray-100); color: var(--gray-600);
+      border: 1.5px solid var(--gray-200); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-edit-login:hover { background: var(--green-light); border-color: var(--green); color: var(--black); }
+    .btn-edit-login .icon-save-mode { display: none; }
+    .btn-edit-login .icon-edit-mode { display: flex; }
+    .login-entry.editing .btn-edit-login .icon-save-mode { display: flex; }
+    .login-entry.editing .btn-edit-login .icon-edit-mode { display: none; }
+    .login-entry.editing .btn-edit-login { background: var(--green); border-color: var(--green-dim); color: var(--black); }
+    .login-entry-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--gray-200); }
+
+    /* inline edit mode */
+    .login-entry.editing { border-color: var(--green); background: var(--white); }
+    .login-edit-form { display: none; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+    .login-entry.editing .login-edit-form { display: flex; }
+    .login-entry.editing .login-view { display: none; }
+    .login-edit-input {
+      width: 100%; border: 1.5px solid var(--gray-200); border-radius: 7px;
+      padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+      background: var(--white); transition: border-color 0.15s;
+    }
+    .login-edit-input:focus { border-color: var(--green); }
+    .edit-actions { display: flex; gap: 6px; }
+    .btn-edit-save {
+      flex: 1; padding: 7px 10px; border: none; border-radius: 7px;
+      background: var(--green); color: var(--black);
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-edit-save:hover { background: var(--green-dim); }
+    .btn-edit-cancel {
+      padding: 7px 10px; border: 1.5px solid var(--gray-200); border-radius: 7px;
+      background: var(--white); font-size: 12px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+    }
+    .btn-edit-cancel:hover { background: var(--gray-100); }
+
+    .lm-empty {
+      text-align: center; padding: 32px 20px; color: var(--gray-400);
+    }
+    .lm-empty-icon { margin-bottom: 10px; opacity: 0.4; }
+    .lm-empty p { font-size: 14px; }
+
+    /* add login form inside modal */
+    .lm-add-section {
+      border-top: 1.5px solid var(--gray-200);
+      padding: 18px 24px 20px;
+      background: var(--gray-50);
+    }
+    .lm-add-title {
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px;
+    }
+    .lm-add-fields { display: flex; flex-direction: column; gap: 10px; }
+    .lm-field-wrap { position: relative; }
+    .lm-field-wrap input {
+      width: 100%; border: 1.5px solid var(--gray-200); border-radius: 8px;
+      padding: 9px 38px 9px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+      background: var(--white); transition: border-color 0.15s;
+    }
+    .lm-field-wrap input:focus { border-color: var(--green); }
+    .lm-field-wrap .field-icon {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      color: var(--gray-400); pointer-events: none;
+    }
+    .lm-add-btn {
+      width: 100%; margin-top: 10px;
+      padding: 10px; border: none; border-radius: 8px;
+      background: var(--green); color: var(--black);
+      font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: background 0.15s;
+    }
+    .lm-add-btn:hover { background: var(--green-dim); }
+
+    /* collapsed add form */
+    .lm-add-fields { display: flex; flex-direction: column; gap: 10px; }
+    .lm-add-fields.collapsed { display: none; }
+    .lm-save-btn-wrap { display: block; }
+    .lm-save-btn-wrap.collapsed { display: none; }
+
+    .lm-toggle-add-btn {
+      width: 100%;
+      padding: 9px 16px; border: 1.5px dashed var(--gray-200); border-radius: 8px;
+      background: transparent; color: var(--gray-400);
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .lm-toggle-add-btn:hover { border-color: var(--green); color: var(--black); background: var(--green-light); }
+    .lm-toggle-add-btn.hidden { display: none; }
+
+    footer { text-align: center; padding: 24px; color: var(--gray-400); font-size: 12px; font-family: 'Space Mono', monospace; }
+
+    /* scrollbar */
+    .lm-body::-webkit-scrollbar { width: 5px; }
+    .lm-body::-webkit-scrollbar-track { background: transparent; }
+    .lm-body::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 10px; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="logo-wrap">
-    <img src="https://911systems.com/logo.svg" alt="911 Systems" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block'">
-    <span class="logo-text header-title" style="display:none">911 Systems</span>
+    <img src="https://911systems.com/logo.svg" alt="911 Systems" onerror="this.style.display='none';document.querySelector('.logo-text').style.display='block'">
+    <span class="logo-text header-title">911 Systems</span>
   </div>
   <span class="header-title">Account Directory</span>
 </header>
@@ -365,59 +446,44 @@
   <p class="page-subtitle">All environment accounts and admin portals — internal use only.</p>
 
   <div class="env-tabs">
-    <button class="env-tab dev active" onclick="switchTab('dev')">
-      <span class="dot"></span>Development
-    </button>
-    <button class="env-tab stg" onclick="switchTab('stg')">
-      <span class="dot"></span>Staging
-    </button>
-    <button class="env-tab prod" onclick="switchTab('prod')">
-      <span class="dot"></span>Production
-    </button>
+    <button class="env-tab tab-dev active" id="tab-dev"><span class="dot"></span>Development</button>
+    <button class="env-tab tab-stg" id="tab-stg"><span class="dot"></span>Staging</button>
+    <button class="env-tab tab-prod" id="tab-prod"><span class="dot"></span>Production</button>
   </div>
 
-  <!-- DEV -->
   <div class="env-panel active" id="panel-dev">
     <div class="section-label">Admin Portal</div>
     <div class="link-grid" id="grid-dev-admin"></div>
-
     <div class="section-label">Accounts</div>
     <div class="link-grid" id="grid-dev-accounts"></div>
-
     <div class="add-link-row">
-      <button id="add-btn" onclick="openModal('dev')">
+      <button class="add-btn" id="addbtn-dev">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
         Add Link
       </button>
     </div>
   </div>
 
-  <!-- STAGING -->
   <div class="env-panel" id="panel-stg">
     <div class="section-label">Admin Portal</div>
     <div class="link-grid" id="grid-stg-admin"></div>
-
     <div class="section-label">Accounts</div>
     <div class="link-grid" id="grid-stg-accounts"></div>
-
     <div class="add-link-row">
-      <button id="add-btn" onclick="openModal('stg')">
+      <button class="add-btn" id="addbtn-stg">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
         Add Link
       </button>
     </div>
   </div>
 
-  <!-- PROD -->
   <div class="env-panel" id="panel-prod">
     <div class="section-label">Admin Portal</div>
     <div class="link-grid" id="grid-prod-admin"></div>
-
     <div class="section-label">Accounts</div>
     <div class="link-grid" id="grid-prod-accounts"></div>
-
     <div class="add-link-row">
-      <button id="add-btn" onclick="openModal('prod')">
+      <button class="add-btn" id="addbtn-prod">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
         Add Link
       </button>
@@ -426,7 +492,7 @@
 </main>
 
 <!-- ADD LINK MODAL -->
-<div class="modal-overlay" id="modal">
+<div class="modal-overlay" id="add-modal">
   <div class="modal">
     <h3>Add Link</h3>
     <div class="form-row">
@@ -445,168 +511,636 @@
       </select>
     </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="saveLink()">Save Link</button>
+      <button class="btn-cancel" id="add-modal-cancel">Cancel</button>
+      <button class="btn-save" id="add-modal-save">Save Link</button>
     </div>
   </div>
 </div>
 
-<footer>© 2025 911 Systems · Internal Use Only</footer>
+<!-- LOGIN MANAGER MODAL -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <div class="lm-header">
+      <div class="lm-header-left">
+        <div class="lm-header-icon">
+          <svg width="18" height="18" fill="none" stroke="#a9ee8a" stroke-width="1.8" viewBox="0 0 24 24">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="lm-title" id="lm-account-name">Account Logins</div>
+          <div class="lm-subtitle" id="lm-account-url"></div>
+        </div>
+      </div>
+      <button class="lm-close" id="lm-close-btn">&#215;</button>
+    </div>
+
+    <div class="lm-body" id="lm-body">
+      <!-- login entries rendered here -->
+    </div>
+
+    <div class="lm-add-section">
+      <div class="lm-add-title">Add Login</div>
+      <button class="lm-toggle-add-btn hidden" id="lm-toggle-add-btn">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Another Login
+      </button>
+      <div class="lm-add-fields" id="lm-add-fields">
+        <div class="lm-field-wrap">
+          <input type="email" id="lm-input-email" placeholder="Email / Username" autocomplete="off">
+          <span class="field-icon">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </span>
+        </div>
+        <div class="lm-field-wrap">
+          <input type="password" id="lm-input-password" placeholder="Password" autocomplete="new-password">
+          <span class="field-icon">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+        </div>
+        <div class="lm-field-wrap">
+          <input type="text" id="lm-input-label" placeholder="Label (optional) — e.g. Admin, Test User">
+          <span class="field-icon">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="lm-save-btn-wrap" id="lm-save-btn-wrap">
+        <button class="lm-add-btn" id="lm-add-btn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Save Login
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 911 Systems · Internal Use Only<br><a href="https://mobrauntech.com/" target="_blank" rel="noopener" style="color:var(--gray-400);text-decoration:none;opacity:0.5;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">By: mobrauntech.com</a></footer>
 
 <script>
-  // ── DATA ──
-  // Built-in links are always hardcoded — never stored in localStorage
-  const BUILTIN = {
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ══════════════════════════════════
+  //  BUILT-IN LINKS
+  // ══════════════════════════════════
+  var BUILTIN = {
     dev: {
-      admin:    [ { id: 'd-admin-1', name: 'Admin Portal', url: 'https://admin.dev-helptapp.com/login', builtin: true } ],
-      accounts: [ { id: 'd-acc-1',   name: 'TOT Account',  url: 'https://tot.account.dev-helptapp.com/', builtin: true } ]
+      admin:    [{ id: 'b-dev-admin-1', name: 'Admin Portal', url: 'https://admin.dev-helptapp.com/login',  builtin: true }],
+      accounts: [{ id: 'b-dev-acc-1',   name: 'TOT Account',  url: 'https://tot.account.dev-helptapp.com/', builtin: true }]
     },
     stg:  { admin: [], accounts: [
-      { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.staging-helptapp.com/', builtin: true }
+    { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.staging-helptapp.com/', builtin: true }
     ] },
     prod: { admin: [], accounts: [
-      { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.911systems.com', builtin: true },
+    { id: 'd-acc-1',   name: 'Quahog Account',  url: 'https://quahog.account.911systems.com', builtin: true },
       { id: 'd-acc-1',   name: 'MPD Account',  url: 'https://mpd.account.911systems.com/', builtin: true },
       { id: 'd-acc-1',   name: 'MFD Account',  url: 'https://mfd.account.911systems.com/', builtin: true }
-    ] }
+      ] }
   };
 
-  function loadData() {
-    let userAdded = { dev: { admin: [], accounts: [] }, stg: { admin: [], accounts: [] }, prod: { admin: [], accounts: [] } };
-    try {
-      const saved = localStorage.getItem('911-dir-useradded');
-      if (saved) userAdded = JSON.parse(saved);
-    } catch {}
-    // Merge builtins + user-added
-    const merged = {};
-    ['dev','stg','prod'].forEach(env => {
-      merged[env] = {};
-      ['admin','accounts'].forEach(type => {
-        merged[env][type] = [
-          ...(BUILTIN[env][type] || []),
-          ...(userAdded[env]?.[type] || [])
-        ];
-      });
-    });
-    return merged;
+  // ══════════════════════════════════
+  //  STORAGE HELPERS
+  // ══════════════════════════════════
+  function loadUserAdded() {
+    var empty = { dev: { admin: [], accounts: [] }, stg: { admin: [], accounts: [] }, prod: { admin: [], accounts: [] } };
+    try { var r = localStorage.getItem('911-dir-v2'); if (r) return JSON.parse(r); } catch(e) {}
+    return empty;
+  }
+  function saveUserAdded(ua) {
+    try { localStorage.setItem('911-dir-v2', JSON.stringify(ua)); } catch(e) {}
   }
 
-  function saveData() {
-    // Only persist user-added links
-    const userAdded = { dev: { admin: [], accounts: [] }, stg: { admin: [], accounts: [] }, prod: { admin: [], accounts: [] } };
-    ['dev','stg','prod'].forEach(env => {
-      ['admin','accounts'].forEach(type => {
-        userAdded[env][type] = data[env][type].filter(i => !i.builtin);
-      });
-    });
-    try { localStorage.setItem('911-dir-useradded', JSON.stringify(userAdded)); } catch {}
+  // logins stored separately: { linkId: [ {id, email, password, label}, ... ] }
+  function loadLogins() {
+    try { var r = localStorage.getItem('911-logins-v1'); if (r) return JSON.parse(r); } catch(e) {}
+    return {};
+  }
+  function saveLogins(l) {
+    try { localStorage.setItem('911-logins-v1', JSON.stringify(l)); } catch(e) {}
   }
 
-  let data = loadData();
-  let currentEnv = 'dev';
+  function buildData(ua) {
+    var d = {};
+    var envs = ['dev','stg','prod'], types = ['admin','accounts'];
+    for (var ei = 0; ei < envs.length; ei++) {
+      var env = envs[ei]; d[env] = {};
+      for (var ti = 0; ti < types.length; ti++) {
+        var type = types[ti];
+        var b = BUILTIN[env][type] || [];
+        var u = (ua[env] && ua[env][type]) ? ua[env][type] : [];
+        d[env][type] = b.concat(u);
+      }
+    }
+    return d;
+  }
 
-  // ── ICONS ──
-  const ICON_ACCOUNT = `<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
-  const ICON_ADMIN = `<svg fill="none" stroke="var(--green)" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-  const ICON_OPEN = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+  var userAdded = loadUserAdded();
+  var logins    = loadLogins();
+  var data      = buildData(userAdded);
+  var currentEnv = 'dev';
 
-  // ── RENDER ──
+  // currently open login item
+  var lmItemId = null;
+
+  // ══════════════════════════════════
+  //  SVG ICONS
+  // ══════════════════════════════════
+  var ICON_ACCOUNT = '<svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
+  var ICON_ADMIN   = '<svg fill="none" stroke="#a9ee8a" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+  var ICON_OPEN    = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+  var ICON_KEY     = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>';
+  var ICON_COPY    = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  var ICON_CHECK   = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ICON_EYE     = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var ICON_EYEOFF  = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  var ICON_TRASH   = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+  var ICON_EMAIL   = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  var ICON_EDIT    = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  var ICON_LOCK    = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ══════════════════════════════════
+  //  RENDER CARDS
+  // ══════════════════════════════════
   function renderAll() {
-    ['dev','stg','prod'].forEach(env => {
-      ['admin','accounts'].forEach(type => {
-        const grid = document.getElementById(`grid-${env}-${type}`);
-        const items = data[env][type];
-        if (!items.length) {
-          grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">No links yet. Click <strong>Add Link</strong> to get started.</div>`;
+    var envs  = ['dev','stg','prod'];
+    var types = ['admin','accounts'];
+    for (var ei = 0; ei < envs.length; ei++) {
+      var env = envs[ei];
+      for (var ti = 0; ti < types.length; ti++) {
+        var type = types[ti];
+        var grid = document.getElementById('grid-' + env + '-' + type);
+        if (!grid) continue;
+        var items = data[env][type];
+        if (!items || items.length === 0) {
+          grid.innerHTML = '<div class="empty-state">No links yet. Click <strong>Add Link</strong> to get started.</div>';
+          continue;
+        }
+        var html = '';
+        for (var i = 0; i < items.length; i++) {
+          html += makeCard(items[i], env, type);
+        }
+        grid.innerHTML = html;
+      }
+    }
+    bindCardButtons();
+  }
+
+  function makeCard(item, env, type) {
+    var isAdmin  = (type === 'admin');
+    var icon     = isAdmin ? ICON_ADMIN : ICON_ACCOUNT;
+    var shortUrl = item.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
+    // key button only on accounts
+    var keyBtn = '';
+    if (!isAdmin) {
+      var itemLogins = logins[item.id] || [];
+      var count = itemLogins.length;
+      var hasCls = count > 0 ? ' has-logins' : '';
+      var badge  = count > 0 ? '<span class="login-count-badge">' + count + '</span>' : '';
+      keyBtn = '<button class="btn-logins' + hasCls + '" data-id="' + esc(item.id) + '" data-name="' + esc(item.name) + '" data-url="' + esc(item.url) + '" title="My Logins">' + ICON_KEY + badge + '</button>';
+    }
+
+    // edit button always shown; delete only shown inside edit mode for non-builtins
+    var editBtn = '<button class="btn-card-edit" data-id="' + esc(item.id) + '" data-env="' + esc(env) + '" data-type="' + esc(type) + '" title="Edit">' +
+      '<span class="icon-edit-mode">' + ICON_EDIT + '</span>' +
+      '<span class="icon-save-mode">' + ICON_CHECK + '</span>' +
+    '</button>';
+
+    var deleteInEdit = item.builtin ? '' :
+      '<button class="btn-card-delete" data-env="' + esc(env) + '" data-type="' + esc(type) + '" data-id="' + esc(item.id) + '">' + ICON_TRASH + ' Delete</button>';
+
+    return '<div class="link-card' + (isAdmin ? ' admin-card' : '') + '" data-card-id="' + esc(item.id) + '">' +
+      // ── view mode ──
+      '<div class="card-view" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%">' +
+        '<div class="link-card-left">' +
+          '<div class="link-icon">' + icon + '</div>' +
+          '<div style="min-width:0">' +
+            '<div class="link-name" title="' + esc(item.name) + '">' + esc(item.name) + '</div>' +
+            '<div class="link-url"  title="' + esc(item.url)  + '">' + esc(shortUrl)  + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="link-actions">' +
+          keyBtn +
+          '<a class="btn-open" href="' + esc(item.url) + '" target="_blank" rel="noopener" title="Open">' + ICON_OPEN + '</a>' +
+          editBtn +
+        '</div>' +
+      '</div>' +
+      // ── edit mode ──
+      '<div class="card-edit-form">' +
+        '<input class="card-edit-input" data-field="name" placeholder="Name" value="' + esc(item.name) + '">' +
+        '<input class="card-edit-input" data-field="url"  placeholder="URL"  value="' + esc(item.url)  + '">' +
+        '<div class="card-edit-actions">' +
+          deleteInEdit +
+          '<span style="flex:1"></span>' +
+          '<button class="btn-card-cancel" data-id="' + esc(item.id) + '">Cancel</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function bindCardButtons() {
+    // Use event delegation on each grid
+    var grids = document.querySelectorAll('.link-grid');
+    for (var g = 0; g < grids.length; g++) {
+      (function(grid) {
+        grid.onclick = function(e) {
+          var t = e.target;
+          while (t && t !== grid) {
+            if (t.classList && t.classList.contains('btn-logins'))     { onOpenLoginManager(t); return; }
+            if (t.classList && t.classList.contains('btn-card-edit')) {
+          var parentCard = t;
+          while (parentCard && !parentCard.classList.contains('link-card')) parentCard = parentCard.parentNode;
+          if (parentCard && parentCard.classList.contains('editing')) { onCardSave(t); }
+          else { onCardEdit(t); }
           return;
         }
-        grid.innerHTML = items.map(item => cardHTML(item, env, type)).join('');
-      });
-    });
+            if (t.classList && t.classList.contains('btn-card-cancel')){ onCardCancel(t); return; }
+            if (t.classList && t.classList.contains('btn-card-save'))  { onCardSave(t); return; }
+            if (t.classList && t.classList.contains('btn-card-delete')){ onRemove(t); return; }
+            // legacy remove (builtin-protected already excluded)
+            if (t.classList && t.classList.contains('btn-remove'))     { onRemove(t); return; }
+            t = t.parentNode;
+          }
+        };
+      })(grids[g]);
+    }
   }
 
-  function cardHTML(item, env, type) {
-    const isAdmin = type === 'admin';
-    const icon = isAdmin ? ICON_ADMIN : ICON_ACCOUNT;
-    const displayUrl = item.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    return `
-      <div class="link-card ${isAdmin ? 'admin-card' : ''}">
-        <div class="link-card-left">
-          <div class="link-icon">${icon}</div>
-          <div>
-            <div class="link-name" title="${escHtml(item.name)}">${escHtml(item.name)}</div>
-            <div class="link-url" title="${escHtml(item.url)}">${escHtml(displayUrl)}</div>
-          </div>
-        </div>
-        <div class="link-actions">
-          <a class="btn-open" href="${escHtml(item.url)}" target="_blank" title="Open">${ICON_OPEN}</a>
-          ${item.builtin ? '' : `<button class="btn-remove" onclick="removeLink('${env}','${type}','${item.id}')" title="Remove">×</button>`}
-        </div>
-      </div>`;
+  function onCardEdit(btn) {
+    var id   = btn.getAttribute('data-id');
+    var card = document.querySelector('.link-card[data-card-id="' + id + '"]');
+    if (!card) return;
+    // close any other open edit cards first
+    var allCards = document.querySelectorAll('.link-card.editing');
+    for (var i = 0; i < allCards.length; i++) { allCards[i].classList.remove('editing'); }
+    card.classList.add('editing');
+    var firstInput = card.querySelector('.card-edit-input');
+    if (firstInput) setTimeout(function(){ firstInput.focus(); firstInput.select(); }, 30);
   }
 
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function onCardCancel(btn) {
+    var id   = btn.getAttribute('data-id');
+    var card = document.querySelector('.link-card[data-card-id="' + id + '"]');
+    if (card) card.classList.remove('editing');
   }
 
-  // ── TABS ──
+  function onCardSave(btn) {
+    var id   = btn.getAttribute('data-id');
+    var env  = btn.getAttribute('data-env');
+    var type = btn.getAttribute('data-type');
+    var card = document.querySelector('.link-card[data-card-id="' + id + '"]');
+    if (!card) return;
+    var inputs = card.querySelectorAll('.card-edit-input');
+    var newName = '', newUrl = '';
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].getAttribute('data-field') === 'name') newName = inputs[i].value.trim();
+      if (inputs[i].getAttribute('data-field') === 'url')  newUrl  = inputs[i].value.trim();
+    }
+    if (!newName || !newUrl) { alert('Name and URL are required.'); return; }
+    if (!/^https?:\/\//i.test(newUrl)) newUrl = 'https://' + newUrl;
+    // update in userAdded (builtins can still be edited in display but save to userAdded as override — simpler: just update in place)
+    var items = data[env][type];
+    for (var j = 0; j < items.length; j++) {
+      if (items[j].id === id) {
+        items[j].name = newName;
+        items[j].url  = newUrl;
+        // if user-added, persist
+        if (!items[j].builtin) {
+          var ua = userAdded[env][type] || [];
+          for (var k = 0; k < ua.length; k++) {
+            if (ua[k].id === id) { ua[k].name = newName; ua[k].url = newUrl; break; }
+          }
+          saveUserAdded(userAdded);
+        }
+        break;
+      }
+    }
+    renderAll();
+  }
+
+  function onRemove(btn) {
+    var env  = btn.getAttribute('data-env');
+    var type = btn.getAttribute('data-type');
+    var id   = btn.getAttribute('data-id');
+    if (!confirm('Remove this link?')) return;
+    if (!userAdded[env]) userAdded[env] = { admin: [], accounts: [] };
+    userAdded[env][type] = (userAdded[env][type] || []).filter(function(item) { return item.id !== id; });
+    saveUserAdded(userAdded);
+    data = buildData(userAdded);
+    renderAll();
+  }
+
+  // ══════════════════════════════════
+  //  TABS
+  // ══════════════════════════════════
   function switchTab(env) {
     currentEnv = env;
-    document.querySelectorAll('.env-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.env-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector(`.env-tab.${env}`).classList.add('active');
-    document.getElementById(`panel-${env}`).classList.add('active');
+    var envs = ['dev','stg','prod'];
+    for (var i = 0; i < envs.length; i++) {
+      var e = envs[i];
+      document.getElementById('tab-' + e).classList[e === env ? 'add' : 'remove']('active');
+      document.getElementById('panel-' + e).classList[e === env ? 'add' : 'remove']('active');
+    }
   }
+  document.getElementById('tab-dev').addEventListener('click',  function() { switchTab('dev'); });
+  document.getElementById('tab-stg').addEventListener('click',  function() { switchTab('stg'); });
+  document.getElementById('tab-prod').addEventListener('click', function() { switchTab('prod'); });
 
-  // ── MODAL ──
-  function openModal(env) {
+  // ══════════════════════════════════
+  //  ADD LINK MODAL
+  // ══════════════════════════════════
+  function openAddModal(env) {
     currentEnv = env;
     document.getElementById('input-name').value = '';
-    document.getElementById('input-url').value = '';
+    document.getElementById('input-url').value  = '';
     document.getElementById('input-type').value = 'accounts';
-    document.getElementById('modal').classList.add('open');
-    setTimeout(() => document.getElementById('input-name').focus(), 50);
+    document.getElementById('add-modal').classList.add('open');
+    setTimeout(function() { document.getElementById('input-name').focus(); }, 50);
   }
+  function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
 
-  function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-  }
+  document.getElementById('addbtn-dev').addEventListener('click',  function() { openAddModal('dev'); });
+  document.getElementById('addbtn-stg').addEventListener('click',  function() { openAddModal('stg'); });
+  document.getElementById('addbtn-prod').addEventListener('click', function() { openAddModal('prod'); });
+  document.getElementById('add-modal-cancel').addEventListener('click', closeAddModal);
+  document.getElementById('add-modal').addEventListener('click', function(e) { if (e.target === this) closeAddModal(); });
 
-  function saveLink() {
-    const name = document.getElementById('input-name').value.trim();
-    let url = document.getElementById('input-url').value.trim();
-    const type = document.getElementById('input-type').value;
-
+  document.getElementById('add-modal-save').addEventListener('click', function() {
+    var name = document.getElementById('input-name').value.trim();
+    var url  = document.getElementById('input-url').value.trim();
+    var type = document.getElementById('input-type').value;
     if (!name || !url) { alert('Please fill in both Name and URL.'); return; }
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-
-    const id = `${currentEnv}-${type}-${Date.now()}`;
-    data[currentEnv][type].push({ id, name, url });
-    saveData();
+    var id = 'u-' + currentEnv + '-' + type + '-' + Date.now();
+    if (!userAdded[currentEnv]) userAdded[currentEnv] = { admin: [], accounts: [] };
+    if (!userAdded[currentEnv][type]) userAdded[currentEnv][type] = [];
+    userAdded[currentEnv][type].push({ id: id, name: name, url: url });
+    saveUserAdded(userAdded);
+    data = buildData(userAdded);
     renderAll();
-    closeModal();
-  }
-
-  // ── REMOVE ──
-  function removeLink(env, type, id) {
-    if (!confirm('Remove this link?')) return;
-    data[env][type] = data[env][type].filter(i => i.id !== id);
-    saveData();
-    renderAll();
-  }
-
-  // close modal on overlay click
-  document.getElementById('modal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
+    closeAddModal();
   });
 
-  // enter to save
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
+  // ══════════════════════════════════
+  //  LOGIN MANAGER MODAL
+  // ══════════════════════════════════
+  function onOpenLoginManager(btn) {
+    lmItemId = btn.getAttribute('data-id');
+    var name = btn.getAttribute('data-name');
+    var url  = btn.getAttribute('data-url');
+    document.getElementById('lm-account-name').textContent = name;
+    document.getElementById('lm-account-url').textContent  = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    document.getElementById('lm-input-email').value    = '';
+    document.getElementById('lm-input-password').value = '';
+    document.getElementById('lm-input-label').value    = '';
+    renderLoginEntries();
+    updateAddFormState();
+    document.getElementById('login-modal').classList.add('open');
+    setTimeout(function() { document.getElementById('lm-input-email').focus(); }, 50);
+  }
+
+  function closeLoginModal() {
+    document.getElementById('login-modal').classList.remove('open');
+    lmItemId = null;
+  }
+
+  document.getElementById('lm-close-btn').addEventListener('click', closeLoginModal);
+  document.getElementById('login-modal').addEventListener('click', function(e) { if (e.target === this) closeLoginModal(); });
+
+  function renderLoginEntries() {
+    var body = document.getElementById('lm-body');
+    var entries = logins[lmItemId] || [];
+    if (entries.length === 0) {
+      body.innerHTML =
+        '<div class="lm-empty">' +
+          '<div class="lm-empty-icon">' +
+            '<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>' +
+          '</div>' +
+          '<p>No logins saved yet.<br>Add one below.</p>' +
+        '</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      var labelText = entry.label ? entry.label : ('Login ' + (i + 1));
+      var maskedPw = '••••••••••••';
+      html +=
+        '<div class="login-entry" data-entry-id="' + esc(entry.id) + '">' +
+          // edit form (hidden by default)
+          '<div class="login-edit-form">' +
+            '<input class="login-edit-input" data-field="label" placeholder="Label (optional)" value="' + esc(entry.label || '') + '">' +
+            '<input class="login-edit-input" data-field="email" placeholder="Email / Username" value="' + esc(entry.email) + '">' +
+            '<input class="login-edit-input" data-field="password" placeholder="Password" value="' + esc(entry.password) + '">' +
+            '<div class="edit-actions">' +
+              '<button class="btn-delete-login" data-entry-id="' + esc(entry.id) + '" title="Delete">' + ICON_TRASH + '</button>' +
+              '<span style="flex:1"></span>' +
+              '<button class="btn-edit-cancel" data-entry-id="' + esc(entry.id) + '">Cancel</button>' +
+            '</div>' +
+          '</div>' +
+          // view (shown by default)
+          '<div class="login-view">' +
+            '<div class="login-entry-label">' + esc(labelText) + '</div>' +
+            '<div class="login-field-row">' +
+              '<div class="login-field-icon">' + ICON_EMAIL + '</div>' +
+              '<div class="login-field-value" id="ef-' + esc(entry.id) + '">' + esc(entry.email) + '</div>' +
+              '<button class="btn-copy" data-copy="' + esc(entry.email) + '" title="Copy email">' + ICON_COPY + '</button>' +
+            '</div>' +
+            '<div class="login-field-row">' +
+              '<div class="login-field-icon">' + ICON_LOCK + '</div>' +
+              '<div class="login-field-value password" id="pf-' + esc(entry.id) + '" data-pw="' + esc(entry.password) + '">' + maskedPw + '</div>' +
+              '<button class="btn-eye" data-entry="' + esc(entry.id) + '" title="Show/hide password">' + ICON_EYE + '</button>' +
+              '<button class="btn-copy" data-copy="' + esc(entry.password) + '" title="Copy password">' + ICON_COPY + '</button>' +
+            '</div>' +
+          '</div>' +
+          // actions
+          '<div class="login-entry-actions">' +
+            '<button class="btn-edit-login" data-entry-id="' + esc(entry.id) + '" title="Edit / Save">' +
+              '<span class="icon-edit-mode">' + ICON_EDIT  + '</span>' +
+              '<span class="icon-save-mode">' + ICON_CHECK + '</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+    }
+    body.innerHTML = html;
+    // use event delegation on body — survives re-renders
+    body.onclick = function(e) {
+      var t = e.target;
+      // walk up to find the actual button (in case click lands on inner SVG/path)
+      while (t && t !== body) {
+        if (t.classList && t.classList.contains('btn-copy'))         { onCopy(t); return; }
+        if (t.classList && t.classList.contains('btn-eye'))          { onTogglePassword(t); return; }
+        if (t.classList && t.classList.contains('btn-delete-login')) { onDeleteLogin(t); return; }
+        if (t.classList && t.classList.contains('btn-edit-login')) {
+          var parentEntry = t;
+          while (parentEntry && !parentEntry.classList.contains('login-entry')) parentEntry = parentEntry.parentNode;
+          if (parentEntry && parentEntry.classList.contains('editing')) { onEditSave(t); }
+          else { onEditLogin(t); }
+          return;
+        }
+        // btn-edit-save handled via btn-edit-login toggle above
+        if (t.classList && t.classList.contains('btn-edit-cancel'))  { onEditCancel(t); return; }
+        t = t.parentNode;
+      }
+    };
+  }
+
+  function onCopy(btn) {
+    var text = btn.getAttribute('data-copy');
+    try {
+      navigator.clipboard.writeText(text).then(function() { flashCopy(btn); });
+    } catch(err) {
+      // fallback
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(e2) {}
+      document.body.removeChild(ta);
+      flashCopy(btn);
+    }
+  }
+
+  function flashCopy(btn) {
+    btn.innerHTML = ICON_CHECK;
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.innerHTML = ICON_COPY;
+      btn.classList.remove('copied');
+    }, 1500);
+  }
+
+  function onTogglePassword(btn) {
+    var entryId = btn.getAttribute('data-entry');
+    var field   = document.getElementById('pf-' + entryId);
+    var pw      = field.getAttribute('data-pw');
+    var revealed = field.classList.contains('revealed');
+    if (revealed) {
+      field.textContent = '••••••••••••';
+      field.classList.remove('revealed');
+      btn.innerHTML = ICON_EYE;
+    } else {
+      field.textContent = pw;
+      field.classList.add('revealed');
+      btn.innerHTML = ICON_EYEOFF;
+    }
+  }
+
+  function onEditLogin(btn) {
+    var entryId = btn.getAttribute('data-entry-id');
+    var card = document.querySelector('.login-entry[data-entry-id="' + entryId + '"]');
+    if (card) card.classList.add('editing');
+  }
+
+  function onEditCancel(btn) {
+    var entryId = btn.getAttribute('data-entry-id');
+    var card = document.querySelector('.login-entry[data-entry-id="' + entryId + '"]');
+    if (card) card.classList.remove('editing');
+  }
+
+  function onEditSave(btn) {
+    var entryId = btn.getAttribute('data-entry-id');
+    var card = document.querySelector('.login-entry[data-entry-id="' + entryId + '"]');
+    if (!card) return;
+    var inputs = card.querySelectorAll('.login-edit-input');
+    var newLabel = '', newEmail = '', newPassword = '';
+    for (var i = 0; i < inputs.length; i++) {
+      var field = inputs[i].getAttribute('data-field');
+      if (field === 'label')    newLabel    = inputs[i].value.trim();
+      if (field === 'email')    newEmail    = inputs[i].value.trim();
+      if (field === 'password') newPassword = inputs[i].value;
+    }
+    if (!newEmail || !newPassword) { alert('Email and password are required.'); return; }
+    var entries = logins[lmItemId] || [];
+    for (var j = 0; j < entries.length; j++) {
+      if (entries[j].id === entryId) {
+        entries[j].label    = newLabel;
+        entries[j].email    = newEmail;
+        entries[j].password = newPassword;
+        break;
+      }
+    }
+    logins[lmItemId] = entries;
+    saveLogins(logins);
+    renderLoginEntries();
+    updateAddFormState();
+    renderAll();
+  }
+
+  function onDeleteLogin(btn) {
+    var entryId = btn.getAttribute('data-entry-id');
+    if (!confirm('Delete this login?')) return;
+    logins[lmItemId] = (logins[lmItemId] || []).filter(function(l) { return l.id !== entryId; });
+    saveLogins(logins);
+    renderLoginEntries();
+    renderAll(); // refresh badge count
+  }
+
+  // ── ADD FORM COLLAPSE / EXPAND ──
+  function updateAddFormState() {
+    var entries = logins[lmItemId] || [];
+    var hasLogins = entries.length > 0;
+    var fields     = document.getElementById('lm-add-fields');
+    var saveBtnWrap = document.getElementById('lm-save-btn-wrap');
+    var toggleBtn  = document.getElementById('lm-toggle-add-btn');
+    if (!fields || !saveBtnWrap || !toggleBtn) return;
+    if (hasLogins) {
+      // collapse form, show toggle button
+      fields.classList.add('collapsed');
+      saveBtnWrap.classList.add('collapsed');
+      toggleBtn.classList.remove('hidden');
+    } else {
+      // expand form, hide toggle button
+      fields.classList.remove('collapsed');
+      saveBtnWrap.classList.remove('collapsed');
+      toggleBtn.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('lm-toggle-add-btn').addEventListener('click', function() {
+    var fields      = document.getElementById('lm-add-fields');
+    var saveBtnWrap = document.getElementById('lm-save-btn-wrap');
+    var toggleBtn   = document.getElementById('lm-toggle-add-btn');
+    fields.classList.remove('collapsed');
+    saveBtnWrap.classList.remove('collapsed');
+    toggleBtn.classList.add('hidden');
+    setTimeout(function() { document.getElementById('lm-input-email').focus(); }, 50);
   });
 
-  // ── INIT ──
+  document.getElementById('lm-add-btn').addEventListener('click', function() {
+    var email    = document.getElementById('lm-input-email').value.trim();
+    var password = document.getElementById('lm-input-password').value;
+    var label    = document.getElementById('lm-input-label').value.trim();
+    if (!email || !password) { alert('Please enter both email and password.'); return; }
+    if (!logins[lmItemId]) logins[lmItemId] = [];
+    logins[lmItemId].push({ id: 'l-' + Date.now(), email: email, password: password, label: label });
+    saveLogins(logins);
+    document.getElementById('lm-input-email').value    = '';
+    document.getElementById('lm-input-password').value = '';
+    document.getElementById('lm-input-label').value    = '';
+    renderLoginEntries();
+    updateAddFormState();
+    renderAll(); // refresh badge count
+    document.getElementById('lm-input-email').focus();
+  });
+
+  // global escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeAddModal();
+      closeLoginModal();
+    }
+  });
+
+  // ══════════════════════════════════
+  //  INIT
+  // ══════════════════════════════════
   renderAll();
+
+}); // end DOMContentLoaded
 </script>
 </body>
 </html>
