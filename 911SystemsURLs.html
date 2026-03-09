@@ -507,7 +507,7 @@
     <div class="link-grid" id="grid-stg-accounts"></div>
     <div class="add-link-row">
       <button class="add-btn" id="addbtn-stg">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add Link
       </button>
     </div>
@@ -520,7 +520,7 @@
     <div class="link-grid" id="grid-prod-accounts"></div>
     <div class="add-link-row">
       <button class="add-btn" id="addbtn-prod">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add Link
       </button>
     </div>
@@ -631,7 +631,10 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     stg: {
       admin:    [],
-      accounts: [{ id: 'b-stg-acc-1',    name: 'Quahog Account', url: 'https://quahog.account.staging-helptapp.com/',        builtin: true }]
+      accounts: [
+        { id: 'b-stg-acc-1', name: 'Quahog Account', url: 'https://quahog.account.staging-helptapp.com/', builtin: true },
+        { id: 'b-stg-acc-2', name: 'TOT Account',    url: 'https://tot.account.staging-helptapp.com/',   builtin: true }
+      ]
     },
     prod: {
       admin:    [],
