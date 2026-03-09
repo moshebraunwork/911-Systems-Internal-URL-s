@@ -338,7 +338,18 @@
     .login-entry.editing .btn-edit-login .icon-save-mode { display: flex; }
     .login-entry.editing .btn-edit-login .icon-edit-mode { display: none; }
     .login-entry.editing .btn-edit-login { background: var(--green); border-color: var(--green-dim); color: var(--black); }
-    .login-entry-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--gray-200); }
+    .login-entry-actions { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--gray-200); }
+    .btn-set-default {
+      display: flex; align-items: center; gap: 5px;
+      background: transparent; border: 1.5px solid var(--gray-200);
+      border-radius: 20px; padding: 3px 10px 3px 7px;
+      font-size: 11px; color: var(--gray-400);
+      font-family: 'DM Sans', sans-serif; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-set-default:hover { border-color: var(--green); color: var(--black); background: var(--green-light); }
+    .btn-set-default.is-default { background: var(--black); border-color: var(--black); color: var(--green); font-weight: 600; }
+    .btn-set-default svg { flex-shrink: 0; }
 
     /* inline edit mode */
     .login-entry.editing { border-color: var(--green); background: var(--white); }
@@ -424,6 +435,48 @@
     .lm-toggle-add-btn.hidden { display: none; }
 
     footer { text-align: center; padding: 24px; color: var(--gray-400); font-size: 12px; font-family: 'Space Mono', monospace; }
+
+    /* EXTENSION BANNER */
+    .ext-banner {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--black); border: 1.5px solid var(--green);
+      border-radius: 12px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      z-index: 200; max-width: 300px;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .ext-banner-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .ext-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .ext-banner-text { flex: 1; min-width: 0; }
+    .ext-banner-title {
+      font-family: 'Space Mono', monospace; color: var(--green);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 3px;
+    }
+    .ext-banner-desc { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
+    .ext-banner-link {
+      display: inline-block; margin-top: 5px;
+      font-size: 10px; font-family: 'Space Mono', monospace;
+      color: var(--green); text-decoration: none; font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .ext-banner-link:hover { text-decoration: underline; }
+    .ext-banner-close {
+      background: transparent; border: none; color: var(--gray-400);
+      cursor: pointer; font-size: 16px; line-height: 1;
+      padding: 2px; flex-shrink: 0; align-self: flex-start;
+      transition: color 0.15s;
+    }
+    .ext-banner-close:hover { color: var(--white); }
+    .ext-banner.hidden { display: none; }
 
     /* scrollbar */
     .lm-body::-webkit-scrollbar { width: 5px; }
@@ -575,6 +628,18 @@
   </div>
 </div>
 
+<div class="ext-banner hidden" id="ext-banner">
+  <div class="ext-banner-icon">
+    <img src="https://911systems.com/favicon.ico" alt="911" onerror="this.src='https://moshebraunwork.github.io/911-Systems-Internal-URL-s/icon128.png'">
+  </div>
+  <div class="ext-banner-text">
+    <div class="ext-banner-title">Chrome Extension</div>
+    <div class="ext-banner-desc">Auto-fill your saved logins on any account page.</div>
+    <a class="ext-banner-link" href="#" id="ext-banner-link" target="_blank" rel="noopener">+ Add to Chrome →</a>
+  </div>
+  <button class="ext-banner-close" id="ext-banner-close">&#215;</button>
+</div>
+
 <footer>© 2025 911 Systems · Internal Use Only<br><a href="https://mobrauntech.com/" target="_blank" rel="noopener" style="color:var(--gray-400);text-decoration:none;opacity:0.5;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">By: mobrauntech.com</a></footer>
 
 <script>
@@ -623,6 +688,15 @@ document.addEventListener('DOMContentLoaded', function() {
     try { localStorage.setItem('911-logins-v1', JSON.stringify(l)); } catch(e) {}
   }
 
+  function loadDefaults() {
+    try { var r = localStorage.getItem('911-defaults-v1'); if (r) return JSON.parse(r); } catch(e) {}
+    return {};
+  }
+  function saveDefaults(d) {
+    try { localStorage.setItem('911-defaults-v1', JSON.stringify(d)); } catch(e) {}
+  }
+  var defaults = loadDefaults();
+
   function buildData(ua) {
     var d = {};
     var envs = ['dev','stg','prod'], types = ['admin','accounts'];
@@ -660,6 +734,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var ICON_TRASH   = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
   var ICON_EMAIL   = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
   var ICON_EDIT    = '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  var ICON_STAR_ON  = '<svg width="11" height="11" fill="#a9ee8a" stroke="#a9ee8a" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  var ICON_STAR_OFF = '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
   var ICON_LOCK    = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
 
   function esc(s) {
@@ -963,6 +1039,15 @@ document.addEventListener('DOMContentLoaded', function() {
           '</div>' +
           // actions
           '<div class="login-entry-actions">' +
+            (function() {
+              var isDefault = defaults[lmItemId] === entry.id;
+              return '<button class="btn-set-default ' + (isDefault ? 'is-default' : '') + '" ' +
+                'data-entry-id="' + esc(entry.id) + '" ' +
+                'title="' + (isDefault ? 'Default login — auto-fills when opening this account\'s login page' : 'Set as default login') + '">' +
+                (isDefault ? ICON_STAR_ON : ICON_STAR_OFF) +
+                (isDefault ? ' Default' : ' Set default') +
+              '</button>';
+            })() +
             '<button class="btn-edit-login" data-entry-id="' + esc(entry.id) + '" title="Edit / Save">' +
               '<span class="icon-edit-mode">' + ICON_EDIT  + '</span>' +
               '<span class="icon-save-mode">' + ICON_CHECK + '</span>' +
@@ -977,6 +1062,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // walk up to find the actual button (in case click lands on inner SVG/path)
       while (t && t !== body) {
         if (t.classList && t.classList.contains('btn-copy'))         { onCopy(t); return; }
+        if (t.classList && t.classList.contains('btn-set-default'))  { onSetDefault(t); return; }
         if (t.classList && t.classList.contains('btn-eye'))          { onTogglePassword(t); return; }
         if (t.classList && t.classList.contains('btn-delete-login')) { onDeleteLogin(t); return; }
         if (t.classList && t.classList.contains('btn-edit-login')) {
@@ -991,6 +1077,18 @@ document.addEventListener('DOMContentLoaded', function() {
         t = t.parentNode;
       }
     };
+  }
+
+  function onSetDefault(btn) {
+    var entryId = btn.getAttribute('data-entry-id');
+    if (defaults[lmItemId] === entryId) {
+      delete defaults[lmItemId]; // toggle off
+    } else {
+      defaults[lmItemId] = entryId; // set new default
+    }
+    saveDefaults(defaults);
+    renderLoginEntries();
+    updateAddFormState();
   }
 
   function onCopy(btn) {
