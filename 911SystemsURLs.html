@@ -439,43 +439,26 @@
     /* EXTENSION BANNER */
     .ext-banner {
       position: fixed; bottom: 20px; right: 20px;
-      background: var(--black); border: 1.5px solid var(--green);
-      border-radius: 12px; padding: 12px 16px;
-      display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      z-index: 200; max-width: 300px;
-      animation: slideUp 0.4s ease;
+      background: rgba(30,30,30,0.92); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; padding: 7px 14px 7px 10px;
+      display: flex; align-items: center; gap: 8px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      z-index: 200; cursor: pointer;
+      text-decoration: none;
+      animation: slideUp 0.3s ease;
+      transition: background 0.15s;
     }
+    .ext-banner:hover { background: rgba(45,45,45,0.95); }
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .ext-banner-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      flex-shrink: 0; overflow: hidden;
+    .ext-banner svg { flex-shrink: 0; opacity: 0.7; }
+    .ext-banner-text {
+      font-size: 12px; color: rgba(255,255,255,0.75);
+      font-family: 'DM Sans', sans-serif; white-space: nowrap;
     }
-    .ext-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .ext-banner-text { flex: 1; min-width: 0; }
-    .ext-banner-title {
-      font-family: 'Space Mono', monospace; color: var(--green);
-      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; margin-bottom: 3px;
-    }
-    .ext-banner-desc { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
-    .ext-banner-link {
-      display: inline-block; margin-top: 5px;
-      font-size: 10px; font-family: 'Space Mono', monospace;
-      color: var(--green); text-decoration: none; font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-    .ext-banner-link:hover { text-decoration: underline; }
-    .ext-banner-close {
-      background: transparent; border: none; color: var(--gray-400);
-      cursor: pointer; font-size: 16px; line-height: 1;
-      padding: 2px; flex-shrink: 0; align-self: flex-start;
-      transition: color 0.15s;
-    }
-    .ext-banner-close:hover { color: var(--white); }
     .ext-banner.hidden { display: none; }
 
     /* scrollbar */
@@ -511,7 +494,7 @@
     <div class="link-grid" id="grid-dev-accounts"></div>
     <div class="add-link-row">
       <button class="add-btn" id="addbtn-dev">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add Link
       </button>
     </div>
@@ -524,7 +507,7 @@
     <div class="link-grid" id="grid-stg-accounts"></div>
     <div class="add-link-row">
       <button class="add-btn" id="addbtn-stg">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
         Add Link
       </button>
     </div>
@@ -537,7 +520,7 @@
     <div class="link-grid" id="grid-prod-accounts"></div>
     <div class="add-link-row">
       <button class="add-btn" id="addbtn-prod">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
         Add Link
       </button>
     </div>
@@ -628,17 +611,10 @@
   </div>
 </div>
 
-<div class="ext-banner hidden" id="ext-banner">
-  <div class="ext-banner-icon">
-    <img src="https://911systems.com/favicon.ico" alt="911" onerror="this.src='https://moshebraunwork.github.io/911-Systems-Internal-URL-s/icon128.png'">
-  </div>
-  <div class="ext-banner-text">
-    <div class="ext-banner-title">Chrome Extension</div>
-    <div class="ext-banner-desc">Auto-fill your saved logins on any account page.</div>
-    <a class="ext-banner-link" href="#" id="ext-banner-link" target="_blank" rel="noopener">+ Add to Chrome →</a>
-  </div>
-  <button class="ext-banner-close" id="ext-banner-close">&#215;</button>
-</div>
+<a class="ext-banner hidden" id="ext-banner" href="#" target="_blank" rel="noopener">
+  <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M352-120H200q-33 0-56.5-23.5T120-200v-152q48 0 84-30.5t36-77.5q0-47-36-77.5T120-568v-152q0-33 23.5-56.5T200-800h160q0-42 29-71t71-29q42 0 71 29t29 71h160q33 0 56.5 23.5T800-720v160q42 0 71 29t29 71q0 42-29 71t-71 29v160q0 33-23.5 56.5T720-120H568q0-50-31.5-85T460-240q-45 0-76.5 35T352-120Zm-152-80h85q24-66 77-93t98-27q45 0 98 27t77 93h85v-240h80q8 0 14-6t6-14q0-8-6-14t-14-6h-80v-240H480v-80q0-8-6-14t-14-6q-8 0-14 6t-6 14v80H200v88q54 20 87 67t33 105q0 57-33 104t-87 68v88Zm260-260Z"/></svg>
+  <span class="ext-banner-text">Add Chrome Extension for a better experience</span>
+</a>
 
 <footer>© 2025 911 Systems · Internal Use Only<br><a href="https://mobrauntech.com/" target="_blank" rel="noopener" style="color:var(--gray-400);text-decoration:none;opacity:0.5;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">By: mobrauntech.com</a></footer>
 
@@ -1241,6 +1217,17 @@ document.addEventListener('DOMContentLoaded', function() {
   //  INIT
   // ══════════════════════════════════
   renderAll();
+
+  // ── EXTENSION BANNER ──
+  var EXTENSION_LINK = '#'; // replace with your Chrome Web Store link
+  var banner = document.getElementById('ext-banner');
+  if (banner) banner.href = EXTENSION_LINK;
+
+  function checkExtension() {
+    if (document.body.getAttribute('data-911-ext') === 'active') return; // extension installed
+    setTimeout(function() { if (banner) banner.classList.remove('hidden'); }, 1500);
+  }
+  checkExtension();
 
 }); // end DOMContentLoaded
 </script>
