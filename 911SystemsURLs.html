@@ -832,6 +832,10 @@ document.addEventListener('DOMContentLoaded', function() {
   //  RENDER CARDS
   // ══════════════════════════════════
   function renderAll() {
+    // Always reload from localStorage so imports/changes are reflected immediately
+    defaults = loadDefaults();
+    data = buildData(loadUserAdded());
+    logins = loadLogins();
     var envs  = ['dev','stg','prod'];
     var types = ['admin','accounts'];
     for (var ei = 0; ei < envs.length; ei++) {
@@ -1364,7 +1368,6 @@ document.addEventListener('DOMContentLoaded', function() {
         var data = JSON.parse(ev.target.result);
         var results = doImport(data);
         showImportResults(results);
-        renderAll();
       } catch(err) {
         showImportResults({ error: 'Invalid file: ' + err.message });
       }
@@ -1487,17 +1490,39 @@ document.addEventListener('DOMContentLoaded', function() {
       saveLogins(lg);
     }
 
-    // ── Import defaults ──
+    // ── Import defaults — remap both link ID and entry ID ──
     if (data.defaults) {
       var df = loadDefaults();
+      // Build old entryId -> new entryId map from what we just imported
+      var entryIdMap = {};
+      if (data.logins) {
+        var importedIds = Object.keys(data.logins);
+        for (var dli = 0; dli < importedIds.length; dli++) {
+          var oldId = importedIds[dli];
+          var entries = data.logins[oldId] || [];
+          var correctLinkId = urlToId[oldId] || oldId;
+          var currentEntries = lg[correctLinkId] || [];
+          for (var dei = 0; dei < entries.length; dei++) {
+            // Match by email to find the new entry ID
+            for (var cei = 0; cei < currentEntries.length; cei++) {
+              if (currentEntries[cei].email.toLowerCase() === entries[dei].email.toLowerCase()) {
+                entryIdMap[entries[dei].id] = currentEntries[cei].id;
+                break;
+              }
+            }
+          }
+        }
+      }
       var defKeys = Object.keys(data.defaults);
       for (var dfi = 0; dfi < defKeys.length; dfi++) {
         var oldDefLinkId = defKeys[dfi];
-        var defEntryId   = data.defaults[oldDefLinkId];
-        var newDefLinkId = urlToId[oldDefLinkId] || oldDefLinkId;
-        df[newDefLinkId] = defEntryId;
+        var oldDefEntryId = data.defaults[oldDefLinkId];
+        var newDefLinkId  = urlToId[oldDefLinkId] || oldDefLinkId;
+        var newDefEntryId = entryIdMap[oldDefEntryId] || oldDefEntryId;
+        df[newDefLinkId] = newDefEntryId;
       }
       saveDefaults(df);
+      defaults = df; // update in-memory immediately
     }
 
     return results;
@@ -1527,9 +1552,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('import-modal-close').addEventListener('click', function() {
     document.getElementById('import-overlay').classList.add('hidden');
+    renderAll();
   });
   document.getElementById('import-overlay').addEventListener('click', function(e) {
-    if (e.target === this) this.classList.add('hidden');
+    if (e.target === this) {
+      this.classList.add('hidden');
+      renderAll();
+    }
   });
 
   // ── QR CODE GENERATOR ──
