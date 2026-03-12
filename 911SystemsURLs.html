@@ -176,6 +176,33 @@
       line-height: 1;
     }
 
+    /* IMPORT / EXPORT */
+    .data-actions {
+      display: flex; gap: 8px; justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+    .btn-data {
+      display: flex; align-items: center; gap: 6px;
+      background: transparent; border: 1.5px solid var(--gray-200);
+      border-radius: 8px; padding: 6px 12px;
+      font-size: 12px; font-family: 'Space Mono', monospace;
+      font-weight: 600; color: var(--gray-400); cursor: pointer;
+      letter-spacing: 0.04em; transition: all 0.15s;
+    }
+    .btn-data:hover { border-color: var(--green); color: var(--black); background: var(--green-light); }
+
+    /* IMPORT RESULT MODAL */
+    .import-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 300; backdrop-filter: blur(4px); }
+    .import-overlay.hidden { display: none; }
+    .import-modal { background: var(--white); border-radius: 16px; padding: 28px; max-width: 380px; width: 90%; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+    .import-modal h3 { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; margin-bottom: 16px; letter-spacing: 0.06em; }
+    .import-results { font-size: 13px; line-height: 1.8; color: var(--gray-400); margin-bottom: 20px; }
+    .import-results .ok  { color: #22a06b; font-weight: 600; }
+    .import-results .dup { color: #e2812a; font-weight: 600; }
+    .import-results .err { color: #e03131; font-weight: 600; }
+    .import-modal-close { background: var(--black); color: var(--white); border: none; border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; }
+    .import-modal-close:hover { opacity: 0.8; }
+
     /* QR BUTTON */
     .btn-qr {
       display: flex; align-items: center; justify-content: center;
@@ -528,6 +555,18 @@
   <h1 class="page-title">Account Directory</h1>
   <p class="page-subtitle">All environment accounts and admin portals — internal use only.</p>
 
+  <div class="data-actions">
+    <button class="btn-data" id="btn-export">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+    <button class="btn-data" id="btn-import">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10" transform="rotate(180 12 12)"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Import
+    </button>
+    <input type="file" id="import-file-input" accept=".json" style="display:none">
+  </div>
+
   <div class="env-tabs">
     <button class="env-tab tab-dev active" id="tab-dev"><span class="dot"></span>Development</button>
     <button class="env-tab tab-stg" id="tab-stg"><span class="dot"></span>Staging</button>
@@ -662,6 +701,15 @@
   <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="rgba(255,255,255,0.7)" style="flex-shrink:0"><path d="M352-120H200q-33 0-56.5-23.5T120-200v-152q48 0 84-30.5t36-77.5q0-47-36-77.5T120-568v-152q0-33 23.5-56.5T200-800h160q0-42 29-71t71-29q42 0 71 29t29 71h160q33 0 56.5 23.5T800-720v160q42 0 71 29t29 71q0 42-29 71t-71 29v160q0 33-23.5 56.5T720-120H568q0-50-31.5-85T460-240q-45 0-76.5 35T352-120Zm-152-80h85q24-66 77-93t98-27q45 0 98 27t77 93h85v-240h80q8 0 14-6t6-14q0-8-6-14t-14-6h-80v-240H480v-80q0-8-6-14t-14-6q-8 0-14 6t-6 14v80H200v88q54 20 87 67t33 105q0 57-33 104t-87 68v88Zm260-260Z"/></svg>
   <span class="ext-banner-text">Add Chrome Extension for a better experience</span>
 </a>
+
+<!-- IMPORT RESULT MODAL -->
+<div class="import-overlay hidden" id="import-overlay">
+  <div class="import-modal">
+    <h3>Import Results</h3>
+    <div class="import-results" id="import-results"></div>
+    <button class="import-modal-close" id="import-modal-close">Done</button>
+  </div>
+</div>
 
 <!-- QR MODAL -->
 <div class="qr-overlay hidden" id="qr-overlay">
@@ -1281,6 +1329,208 @@ document.addEventListener('DOMContentLoaded', function() {
   //  INIT
   // ══════════════════════════════════
   renderAll();
+
+  // ── EXPORT ──
+  document.getElementById('btn-export').addEventListener('click', function() {
+    var ua = loadUserAdded();
+    var lg = loadLogins();
+    var df = loadDefaults();
+    var payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      userAdded: ua,
+      logins: lg,
+      defaults: df
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '911-directory-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  // ── IMPORT ──
+  document.getElementById('btn-import').addEventListener('click', function() {
+    document.getElementById('import-file-input').click();
+  });
+
+  document.getElementById('import-file-input').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var data = JSON.parse(ev.target.result);
+        var results = doImport(data);
+        showImportResults(results);
+        renderAll();
+      } catch(err) {
+        showImportResults({ error: 'Invalid file: ' + err.message });
+      }
+      // reset so same file can be re-imported
+      document.getElementById('import-file-input').value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  function doImport(data) {
+    var results = { linksAdded: 0, linksDup: 0, loginsAdded: 0, loginsDup: 0, loginsMoved: 0, errors: [] };
+
+    // ── Build a URL->linkId map from ALL known links (builtin + existing user-added) ──
+    var urlToId = {};
+    var envs = ['dev','stg','prod'], types = ['admin','accounts'];
+    // builtins
+    for (var ei = 0; ei < envs.length; ei++) {
+      for (var ti = 0; ti < types.length; ti++) {
+        var bl = BUILTIN[envs[ei]][types[ti]] || [];
+        for (var bi = 0; bi < bl.length; bi++) {
+          try { urlToId[new URL(bl[bi].url).hostname.toLowerCase()] = bl[bi].id; } catch(ex) {}
+          urlToId[bl[bi].url.toLowerCase()] = bl[bi].id;
+        }
+      }
+    }
+
+    // ── Import user-added links ──
+    var ua = loadUserAdded();
+    if (data.userAdded) {
+      for (var ei2 = 0; ei2 < envs.length; ei2++) {
+        for (var ti2 = 0; ti2 < types.length; ti2++) {
+          var incoming = (data.userAdded[envs[ei2]] && data.userAdded[envs[ei2]][types[ti2]]) ? data.userAdded[envs[ei2]][types[ti2]] : [];
+          var existing = ua[envs[ei2]][types[ti2]];
+          for (var ii = 0; ii < incoming.length; ii++) {
+            var link = incoming[ii];
+            // Check duplicate by URL
+            var isDup = false;
+            for (var xi = 0; xi < existing.length; xi++) {
+              if (existing[xi].url.toLowerCase() === link.url.toLowerCase()) { isDup = true; break; }
+            }
+            // Also check builtins
+            for (var bi2 = 0; bi2 < (BUILTIN[envs[ei2]][types[ti2]] || []).length; bi2++) {
+              if (BUILTIN[envs[ei2]][types[ti2]][bi2].url.toLowerCase() === link.url.toLowerCase()) { isDup = true; break; }
+            }
+            if (isDup) { results.linksDup++; }
+            else {
+              // Give it a fresh ID to avoid collisions
+              var newId = 'u-' + envs[ei2] + '-' + types[ti2] + '-' + Date.now() + '-' + ii;
+              var newLink = { id: newId, name: link.name, url: link.url };
+              existing.push(newLink);
+              // Map old ID and URL to new ID
+              urlToId[link.url.toLowerCase()] = newId;
+              try { urlToId[new URL(link.url).hostname.toLowerCase()] = newId; } catch(ex) {}
+              if (link.id) urlToId[link.id] = newId; // old id alias
+              results.linksAdded++;
+            }
+          }
+        }
+      }
+      saveUserAdded(ua);
+    }
+
+    // Also add existing user-added to urlToId
+    for (var ei3 = 0; ei3 < envs.length; ei3++) {
+      for (var ti3 = 0; ti3 < types.length; ti3++) {
+        var ex3 = ua[envs[ei3]][types[ti3]] || [];
+        for (var xi3 = 0; xi3 < ex3.length; xi3++) {
+          urlToId[ex3[xi3].url.toLowerCase()] = ex3[xi3].id;
+          try { urlToId[new URL(ex3[xi3].url).hostname.toLowerCase()] = ex3[xi3].id; } catch(ex) {}
+        }
+      }
+    }
+
+    // ── Import logins — re-key to correct link ID by URL ──
+    var lg = loadLogins();
+    if (data.logins) {
+      var importedLinkIds = Object.keys(data.logins);
+      for (var li = 0; li < importedLinkIds.length; li++) {
+        var oldLinkId = importedLinkIds[li];
+        var loginEntries = data.logins[oldLinkId];
+        if (!loginEntries || !loginEntries.length) continue;
+
+        // Find the correct current link ID for this old link ID
+        // Strategy: check old id directly, then try to find by URL in data
+        var correctId = urlToId[oldLinkId] || oldLinkId;
+
+        // Verify correctId exists in current links
+        var idExists = false;
+        for (var ei4 = 0; ei4 < envs.length; ei4++) {
+          for (var ti4 = 0; ti4 < types.length; ti4++) {
+            var allLinks = (BUILTIN[envs[ei4]][types[ti4]] || []).concat(ua[envs[ei4]][types[ti4]] || []);
+            for (var al = 0; al < allLinks.length; al++) {
+              if (allLinks[al].id === correctId) { idExists = true; break; }
+            }
+          }
+        }
+
+        if (!idExists) {
+          results.errors.push('Could not match logins from "' + oldLinkId + '" to any link');
+          continue;
+        }
+
+        if (correctId !== oldLinkId) results.loginsMoved++;
+
+        if (!lg[correctId]) lg[correctId] = [];
+        for (var ji = 0; ji < loginEntries.length; ji++) {
+          var entry = loginEntries[ji];
+          // Dedupe by email within same link
+          var isDupLogin = false;
+          for (var di = 0; di < lg[correctId].length; di++) {
+            if (lg[correctId][di].email.toLowerCase() === entry.email.toLowerCase()) { isDupLogin = true; break; }
+          }
+          if (isDupLogin) { results.loginsDup++; }
+          else {
+            lg[correctId].push({ id: 'l-' + Date.now() + '-' + ji, email: entry.email, password: entry.password, label: entry.label || '' });
+            results.loginsAdded++;
+          }
+        }
+      }
+      saveLogins(lg);
+    }
+
+    // ── Import defaults ──
+    if (data.defaults) {
+      var df = loadDefaults();
+      var defKeys = Object.keys(data.defaults);
+      for (var dfi = 0; dfi < defKeys.length; dfi++) {
+        var oldDefLinkId = defKeys[dfi];
+        var defEntryId   = data.defaults[oldDefLinkId];
+        var newDefLinkId = urlToId[oldDefLinkId] || oldDefLinkId;
+        df[newDefLinkId] = defEntryId;
+      }
+      saveDefaults(df);
+    }
+
+    return results;
+  }
+
+  function showImportResults(results) {
+    var overlay = document.getElementById('import-overlay');
+    var el = document.getElementById('import-results');
+    if (results.error) {
+      el.innerHTML = '<span class="err">✕ ' + esc(results.error) + '</span>';
+    } else {
+      var lines = [];
+      lines.push('<span class="ok">✓ ' + results.linksAdded + ' link' + (results.linksAdded !== 1 ? 's' : '') + ' added</span>');
+      if (results.linksDup)   lines.push('<span class="dup">⊘ ' + results.linksDup + ' duplicate link' + (results.linksDup !== 1 ? 's' : '') + ' skipped</span>');
+      lines.push('<span class="ok">✓ ' + results.loginsAdded + ' login' + (results.loginsAdded !== 1 ? 's' : '') + ' added</span>');
+      if (results.loginsDup)  lines.push('<span class="dup">⊘ ' + results.loginsDup + ' duplicate login' + (results.loginsDup !== 1 ? 's' : '') + ' skipped</span>');
+      if (results.loginsMoved) lines.push('<span class="ok">↻ ' + results.loginsMoved + ' login' + (results.loginsMoved !== 1 ? 's' : '') + ' re-linked to correct URL</span>');
+      if (results.errors.length) {
+        for (var i = 0; i < results.errors.length; i++) {
+          lines.push('<span class="err">⚠ ' + esc(results.errors[i]) + '</span>');
+        }
+      }
+      el.innerHTML = lines.join('<br>');
+    }
+    overlay.classList.remove('hidden');
+  }
+
+  document.getElementById('import-modal-close').addEventListener('click', function() {
+    document.getElementById('import-overlay').classList.add('hidden');
+  });
+  document.getElementById('import-overlay').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.add('hidden');
+  });
 
   // ── QR CODE GENERATOR ──
   function onOpenQR(btn) {
