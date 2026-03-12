@@ -1173,14 +1173,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function onSetDefault(btn) {
     var entryId = btn.getAttribute('data-entry-id');
+
+    // If this entry is currently in edit mode, persist the field values NOW
+    // without calling onEditSave (which would re-render and kill edit state)
+    var entryEl = btn;
+    while (entryEl && !entryEl.classList.contains('login-entry')) entryEl = entryEl.parentNode;
+    if (entryEl && entryEl.classList.contains('editing')) {
+      var inputs = entryEl.querySelectorAll('.login-edit-input');
+      var newLabel = '', newEmail = '', newPassword = '';
+      for (var ii = 0; ii < inputs.length; ii++) {
+        var f = inputs[ii].getAttribute('data-field');
+        if (f === 'label')    newLabel    = inputs[ii].value.trim();
+        if (f === 'email')    newEmail    = inputs[ii].value.trim();
+        if (f === 'password') newPassword = inputs[ii].value;
+      }
+      if (newEmail && newPassword) {
+        var entries = logins[lmItemId] || [];
+        for (var j = 0; j < entries.length; j++) {
+          if (entries[j].id === entryId) {
+            entries[j].label    = newLabel;
+            entries[j].email    = newEmail;
+            entries[j].password = newPassword;
+            break;
+          }
+        }
+        logins[lmItemId] = entries;
+        saveLogins(logins);
+        // Also update the view row so it reflects saved values when edit closes later
+        var viewEmail = entryEl.querySelector('.login-email-val');
+        if (viewEmail) viewEmail.textContent = newEmail;
+        // Update copy button data on password row
+        var copyPwBtn = entryEl.querySelector('.btn-copy[data-copy]');
+        if (copyPwBtn) copyPwBtn.setAttribute('data-copy', newPassword);
+      }
+    }
+
+    // Toggle default
     if (defaults[lmItemId] === entryId) {
-      delete defaults[lmItemId]; // toggle off
+      delete defaults[lmItemId];
     } else {
-      defaults[lmItemId] = entryId; // set new default
+      defaults[lmItemId] = entryId;
     }
     saveDefaults(defaults);
-    renderLoginEntries();
-    updateAddFormState();
+
+    // Update only the star buttons — do NOT re-render, preserving edit state
+    var allDefBtns = document.querySelectorAll('#lm-body .btn-set-default');
+    for (var i = 0; i < allDefBtns.length; i++) {
+      var b = allDefBtns[i];
+      var bid = b.getAttribute('data-entry-id');
+      var isNowDefault = defaults[lmItemId] === bid;
+      b.classList.toggle('is-default', isNowDefault);
+      b.innerHTML = (isNowDefault ? ICON_STAR_ON : ICON_STAR_OFF) + (isNowDefault ? ' Default' : ' Set default');
+      b.title = isNowDefault ? 'Default login — auto-fills when opening this account\'s login page' : 'Set as default login';
+    }
   }
 
   function onCopy(btn) {
