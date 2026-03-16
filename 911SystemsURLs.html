@@ -864,9 +864,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var icon     = isAdmin ? ICON_ADMIN : ICON_ACCOUNT;
     var shortUrl = item.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
-    // key button only on accounts
+    // key button only on accounts, never on production
     var keyBtn = '';
-    if (!isAdmin) {
+    if (!isAdmin && env !== 'prod') {
       var itemLogins = logins[item.id] || [];
       var count = itemLogins.length;
       var hasCls = count > 0 ? ' has-logins' : '';
@@ -1377,6 +1377,32 @@ document.addEventListener('DOMContentLoaded', function() {
   // ══════════════════════════════════
   //  INIT
   // ══════════════════════════════════
+
+  // ── Security: purge any prod logins that may have been saved previously ──
+  (function purgeProdLogins() {
+    var prodIds = [];
+    var envs = ['prod'];
+    var types = ['admin', 'accounts'];
+    for (var ei = 0; ei < envs.length; ei++) {
+      var bl = BUILTIN[envs[ei]];
+      for (var ti = 0; ti < types.length; ti++) {
+        var items = bl[types[ti]] || [];
+        for (var i = 0; i < items.length; i++) prodIds.push(items[i].id);
+      }
+      var ua = loadUserAdded();
+      var uaItems = (ua[envs[ei]].admin || []).concat(ua[envs[ei]].accounts || []);
+      for (var j = 0; j < uaItems.length; j++) prodIds.push(uaItems[j].id);
+    }
+    var lg = loadLogins();
+    var df = loadDefaults();
+    var changed = false;
+    for (var k = 0; k < prodIds.length; k++) {
+      if (lg[prodIds[k]]) { delete lg[prodIds[k]]; changed = true; }
+      if (df[prodIds[k]]) { delete df[prodIds[k]]; changed = true; }
+    }
+    if (changed) { saveLogins(lg); saveDefaults(df); }
+  })();
+
   renderAll();
 
   // ── EXPORT ──
